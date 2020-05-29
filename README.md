@@ -45,7 +45,7 @@ Execute o comando `composer du` e em seguida`composer update`.
  EPSJV\Acl\Providers\ServiceProvider::class,
  ``` 
  
-* Publicar os arquivos de idiomas com as mensagens de erro:
+* Publicar:
 ```php
  php artisan vendor:publish --provider="EPSJV\Acl\Providers\ServiceProvider"
 ```
