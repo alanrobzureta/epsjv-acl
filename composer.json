@@ -5,7 +5,7 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "EPSJV\\Acl\\": "pacotes/acl"
+            "EPSJV\\Acl\\": "/"
         }
     }
 }
