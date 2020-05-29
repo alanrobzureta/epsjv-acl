@@ -3,7 +3,7 @@
 
 ## Descrição
 
-EPSJV-Acl é um pacote criado para facilitar o processo de criação das regras de controle de acesso baseado em papéis de usuários, possibilitando o controle de acesso de usuários com multipos papéis.
+laravel-acl é um pacote criado para facilitar o processo de criação das regras de controle de acesso baseado em papéis de usuários, possibilitando o controle de acesso de usuários com multipos papéis.
 
 
 ## Requisitos
@@ -13,10 +13,32 @@ EPSJV-Acl é um pacote criado para facilitar o processo de criação das regras 
 
 ## Instalação 
 
-+ Executando o comando para adicionar a dependência automaticamente
++ Adicione esta entrada ao seu composer.json:
 ```php
-composer require alanrobzureta/epsjv-acl
+"repositories":[
+        {
+            "type":"package",
+            "package":{
+                "name":"epsjv/acl",
+                "version":"master",
+                "source":{
+                    "type":"git",
+                    "reference": "master",
+                    "url": "https://github.com/alanrobzureta/laravel-acl.git"
+                }
+            }
+        }
+    ],
 ```
+
++ Adicione esta entrada ao seu composer.json:
+```php
+"require": {
+        "epsjv/acl": "master"
+    },
+```
+Execute o comando `composer du` e em seguida`composer update`.
+
 
 * Baseado em uma instalação limpa abra o arquivo `config/app.php` navegue até a seção `providers` e insira no final
 ```php
