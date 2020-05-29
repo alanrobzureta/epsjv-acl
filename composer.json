@@ -1,0 +1,11 @@
+{
+    "name": "epsjv/acl",
+    "description": "Pacote Básico de Permissões.",
+    "license": "MIT",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "EPSJV\\Acl\\": "pacotes/acl"
+        }
+    }
+}
