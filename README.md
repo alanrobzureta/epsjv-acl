@@ -13,32 +13,10 @@ laravel-acl é um pacote criado para facilitar o processo de criação das regra
 
 ## Instalação 
 
-+ Adicione esta entrada ao seu composer.json:
++ Execute o seguinte comando:
 ```php
-"repositories":[
-        {
-            "type":"package",
-            "package":{
-                "name":"epsjv/acl",
-                "version":"master",
-                "source":{
-                    "type":"git",
-                    "reference": "master",
-                    "url": "https://github.com/alanrobzureta/laravel-acl.git"
-                }
-            }
-        }
-    ],
+composer require epsjv/acl
 ```
-
-+ Adicione esta entrada ao seu composer.json:
-```php
-"require": {
-        "epsjv/acl": "master"
-    },
-```
-Execute o comando `composer du` e em seguida`composer update`.
-
 
 * Baseado em uma instalação limpa abra o arquivo `config/app.php` navegue até a seção `providers` e insira no final
 ```php
@@ -49,7 +27,34 @@ Execute o comando `composer du` e em seguida`composer update`.
 ```php
  php artisan vendor:publish --provider="EPSJV\Acl\Providers\ServiceProvider"
 ```
+* Registrar as Seeds básicas de permissões no database/seeds/DatabaseSeeder.php:
+```php
+public function run()
+{
+        // $this->call(UsersTableSeeder::class);
+        $this->call(AclPapelTableSeeder::class);
+        $this->call(AclPermissaoTableSeeder::class);
+        $this->call(AclPapelUserTableSeeder::class);
+        $this->call(AclPapelPermissaoTableSeeder::class);
+}
+```
 
+* Executar o seguinte comando para rodar a seed:
+```php
+ php artisan migrate --seed
+```
+
+* Incluir a Trait no model User (User.php) conforme abaixo:
+```php
+ 
+use EPSJV\Acl\Traits\HasPapeis;
+
+class User extends Authenticatable
+{
+    use HasPapeis;
+    
+}
+```
 
 > O pacote conta com uma estrutura de dados pronta e simples para trabalhar as permissões e os papéis de usuário.
 
