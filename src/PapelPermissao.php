@@ -10,4 +10,6 @@ class PapelPermissao extends Model
 
     protected $fillable = ['papel_id', 'permissao_id'];
 
+    public $timestamps = false;
+
 }
