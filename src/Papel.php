@@ -2,6 +2,7 @@
 
 namespace EPSJV\Acl;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Papel extends Model
@@ -18,5 +19,10 @@ class Papel extends Model
     public function permissoes()
     {
         return $this->belongsToMany(Permissao::class,PapelPermissao::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class,PapelUser::class);
     }
 }
