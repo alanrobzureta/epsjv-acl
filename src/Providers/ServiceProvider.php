@@ -6,11 +6,6 @@ use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 
 class ServiceProvider extends LaravelServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
     public function boot()
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
@@ -22,8 +17,4 @@ class ServiceProvider extends LaravelServiceProvider
         ]);
     }
 
-    public function register()
-    {
-        $this->app->register(\EPSJV\Acl\Providers\AuthServiceProvider::class);
-    }
 }   

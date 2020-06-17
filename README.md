@@ -44,14 +44,50 @@ public function run()
  php artisan migrate --seed
 ```
 
-* Incluir a Trait no model User (User.php) conforme abaixo:
+* Abra o arquivo App\Providers\AuthServiceProvider.php da aplicação para configurar conforme abaixo:
+```php
+namespace App\Providers;
+
+use EPSJV\Acl\Traits\MakeAuthorizations; // Importar a Trait MakeAuthorizations do pacote
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+
+
+class AuthServiceProvider extends ServiceProvider
+{
+    use MakeAuthorizations;
+    
+    /**
+     * The policy mappings for the application.
+     *
+     * @var array
+     */
+    protected $policies = [
+        User::class => 'EPSJV\Acl\Policies\UserPolicy', // Registrar a policy
+    ];
+
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+       $this->makeAuthorizations(); // Invocar o método makeAuthorizations
+    }
+}
+
+```
+
+* Incluir as Traits "HasPapeis" e "WithPapeis" no model User (User.php) conforme abaixo:
 ```php
  
 use EPSJV\Acl\Traits\HasPapeis;
+use EPSJV\Acl\Traits\WithPapeis;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasPapeis;
+    use Notifiable, HasPapeis, WithPapeis;
     
 }
 ```
@@ -122,6 +158,57 @@ Proteção das Views:
 
 ```
 
+## E se eu quiser carregar uma sessão com o papel?
+A implementação desse pacote é para um cenário onde são carregados todos os papéis e permissões associados ao usuário. Porém você pode implementar sua própria lógica para carregar um papel por acesso. 
+
+Um exemplo dessa implementação pode ser feito da seguinte forma:
+
+1) Dentro do Diretório "app" da sua aplicação, crie uma pasta chamada "Traits".
+
+2) Dentro dessa nova pasta, crie uma Trait chamada MakeAuthorizations.php com o seguinte conteudo:
+
+```php
+    <?php
+
+namespace App\Traits;
+
+use App\User;
+use EPSJV\Acl\Permissao;
+use Illuminate\Support\Facades\Gate;
+
+trait MakeAuthorizations
+{
+    public function makeAuthorizations()
+    {
+        $permissoes = Permissao::with('papeis')->get();
+        
+        foreach ($permissoes as $permissao) {
+            Gate::define($permissao->nome, function(User $user) use ($permissao) {                                        
+                return $permissao->papeis->pluck('id')->contains(session('session_papel_id'));  
+            });            
+        }
+    }
+    
+}
+
+```
+
+3) No AuhServiceProvider de sua aplicação, altere o import da Trait para passar a utilizar Trait criada ao invés da Trait do pacote:
+
+ - Substituir em App\Providers\AuhServiceProvider.php:
+```php
+
+use EPSJV\Acl\Traits\MakeAuthorizations;
+
+```
+ - para:
+```php
+
+use App\Traits\MakeAuthorizations;
+
+```
+
+#
 
 Veja tudo sobre a utilização de [AUTHORIZATIONS](hhttps://laravel.com/docs/6.x/authorization).
 
